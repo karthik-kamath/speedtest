@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpeedTest</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #111;
+            color: white;
+            font-family: Arial, Helvetica, sans-serif;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .title {
+            font-size: 28px;
+            letter-spacing: 4px;
+            margin-bottom: 50px;
+            color: #999;
+        }
+
+        .speed {
+            font-size: 120px;
+            font-weight: bold;
+            line-height: 1;
+        }
+
+        .unit {
+            font-size: 28px;
+            color: #aaa;
+            margin-top: 10px;
+        }
+
+        .status {
+            margin-top: 20px;
+            font-size: 20px;
+            color: #ffb347;
+        }
+
+        .results {
+            margin-top: 60px;
+
+            display: flex;
+            justify-content: center;
+            gap: 80px;
+        }
+
+        .card {
+            min-width: 180px;
+        }
+
+        .label {
+            color: #888;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .value {
+            font-size: 42px;
+            font-weight: bold;
+        }
+
+        .sub {
+            margin-top: 8px;
+            color: #aaa;
+            font-size: 16px;
+        }
+
+        button {
+            margin-top: 50px;
+
+            background: #ff6b00;
+            color: white;
+
+            border: none;
+            border-radius: 8px;
+
+            padding: 15px 35px;
+
+            font-size: 18px;
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        button:hover {
+            background: #ff8126;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="title">
+            SPEEDTEST
+        </div>
+
+        <div id="mainSpeed" class="speed">
+            0
+        </div>
+
+        <div class="unit">
+            Mbps
+        </div>
+
+        <div id="status" class="status">
+            Idle
+        </div>
+
+        <div class="results">
+
+            <div class="card">
+                <div class="label">
+                    Download
+                </div>
+
+                <div id="downloadSpeed" class="value">
+                    --
+                </div>
+
+                <div id="downloadMb" class="sub">
+                    --
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="label">
+                    Upload
+                </div>
+
+                <div id="uploadSpeed" class="value">
+                    --
+                </div>
+
+                <div id="uploadMb" class="sub">
+                    --
+                </div>
+            </div>
+
+        </div>
+
+        <button onclick="runSpeedTest()">
+            Start Test
+        </button>
+
+    </div>
+
+    <script>
+
+        async function runSpeedTest() {
+
+            const status = document.getElementById("status");
+
+            const mainSpeed = document.getElementById("mainSpeed");
+
+            const downloadSpeed = document.getElementById("downloadSpeed");
+            const uploadSpeed = document.getElementById("uploadSpeed");
+
+            const downloadMb = document.getElementById("downloadMb");
+            const uploadMb = document.getElementById("uploadMb");
+
+            status.innerText = "Testing...";
+
+            mainSpeed.innerText = "0";
+
+            downloadSpeed.innerText = "--";
+            uploadSpeed.innerText = "--";
+
+            downloadMb.innerText = "--";
+            uploadMb.innerText = "--";
+
+            try {
+
+                const response = await fetch("/speedtest");
+
+                const data = await response.json();
+
+                animateSpeed(
+                    mainSpeed,
+                    data.download.mbps
+                );
+
+                downloadSpeed.innerText =
+                    data.download.mbps.toFixed(2) + " Mbps";
+
+                uploadSpeed.innerText =
+                    data.upload.mbps.toFixed(2) + " Mbps";
+
+                downloadMb.innerText =
+                    data.download.mb_transferred.toFixed(2) + " MB transferred";
+
+                uploadMb.innerText =
+                    data.upload.mb_transferred.toFixed(2) + " MB transferred";
+
+                status.innerText = "Completed";
+
+            }
+            catch (err) {
+
+                console.error(err);
+
+                status.innerText = "Failed";
+            }
+        }
+
+        function animateSpeed(element, target) {
+
+            let current = 0;
+
+            const step = target / 100;
+
+            const interval = setInterval(() => {
+
+                current += step;
+
+                if (current >= target) {
+
+                    current = target;
+
+                    clearInterval(interval);
+                }
+
+                element.innerText = current.toFixed(0);
+
+            }, 15);
+        }
+
+    </script>
+
+</body>
+
+</html>

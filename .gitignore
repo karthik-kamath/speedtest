@@ -1,0 +1,12 @@
+build/
+vcpkg/
+*.dll
+*.exe
+*.obj
+*.pdb
+*.ilk
+*.lib
+*.exp
+*.cache
+*.log
+*.txt
