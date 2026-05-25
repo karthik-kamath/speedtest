@@ -7,7 +7,7 @@ A multi-threaded internet speed testing application written in modern C++ using:
 - CMake
 - vcpkg
 
-The project supports:
+The project includes:
 
 - Parallel download testing
 - Parallel upload testing
@@ -16,6 +16,8 @@ The project supports:
 - HTTP API
 - Browser-based frontend
 
+---
+
 # Features
 
 - Multi-threaded download/upload workers
@@ -23,11 +25,14 @@ The project supports:
 - Configurable thread count
 - Aggregate Mbps calculation
 - Running average speed
-- Min / Max speed
-- Standard deviation
-- Percentile metrics (P5/P50/P95/P99)
+- Min / Max speed tracking
+- Standard deviation calculation
+- Percentile metrics (P5 / P50 / P95 / P99)
 - Lightweight web frontend
 - JSON HTTP API
+- CLI and browser-based execution modes
+
+---
 
 # Tech Stack
 
@@ -37,8 +42,11 @@ The project supports:
 - CMake
 - vcpkg
 
+---
+
 # Project Structure
 
+```text
 speedtest/
 │
 ├── assets/
@@ -70,62 +78,108 @@ speedtest/
 ├── CMakeLists.txt
 ├── vcpkg.json
 └── README.md
+```
+
+---
 
 # Prerequisites
 
-Install:
+Install the following tools:
 
-* Git
-* CMake
-* C++ compiler
-* vcpkg
+- Git
+- CMake
+- A C++ compiler
+- vcpkg
 
-Recommended compiler:
+Recommended compilers:
 
-* MSVC (Visual Studio Build Tools)
-* MinGW-w64
+- MSVC (Visual Studio Build Tools)
+- MinGW-w64
+
+---
 
 # Installing vcpkg
 
 Clone vcpkg:
+
+```bash
 git clone https://github.com/microsoft/vcpkg.git
+```
 
 Go into the folder:
+
+```bash
 cd vcpkg
+```
 
 Bootstrap vcpkg:
+
 ### Windows
+
+```bash
 .\bootstrap-vcpkg.bat
+```
 
 ### Linux/macOS
+
+```bash
 ./bootstrap-vcpkg.sh
+```
+
+---
 
 # Installing Dependencies
 
 Install libcurl using vcpkg:
+
+```bash
 .\vcpkg install curl
+```
+
+---
+
+# Cloning The Repository
+
+```bash
+git clone https://github.com/karthik-kamath/speedtest.git
+```
+
+Go into the project folder:
+
+```bash
+cd speedtest
+```
+
+---
 
 # Building The Project
 
-Clone the repository:
-git clone https://github.com/YOUR_USERNAME/speedtest.git
-
-Go into the project:
-cd speedtest
-
 Generate build files:
-cmake -S . -B build -DCMAKE_TOOLCHAIN_FILE=C:/path/to/vcpkg/scripts/buildsystems/vcpkg.cmake
 
-Build:
+```bash
+cmake -S . -B build ^
+-DCMAKE_TOOLCHAIN_FILE=C:/path/to/vcpkg/scripts/buildsystems/vcpkg.cmake
+```
+
+Build the project:
+
+```bash
 cmake --build build
+```
+
+---
 
 # Running CLI Version
 
 Run:
+
+```bash
 .\build\Debug\speedtest_cli.exe
+```
 
-# Example output:
+Example output:
 
+```text
 ========== DOWNLOAD ==========
 Downloaded MB: 64.18
 Aggregate Speed: 51.41 Mbps
@@ -133,18 +187,29 @@ Aggregate Speed: 51.41 Mbps
 ========== UPLOAD ==========
 Uploaded MB: 40.56
 Aggregate Speed: 33.16 Mbps
+```
 
+---
 
 # Running Web Version
 
 Run:
+
+```bash
 .\build\Debug\speedtest_server.exe
+```
 
 Open browser:
+
+```text
 http://localhost:8080
+```
+
+---
 
 # Example API Response
 
+```json
 {
   "download": {
     "mbps": 68.36,
@@ -155,24 +220,34 @@ http://localhost:8080
     "mb_transferred": 51.31
   }
 }
+```
+
+---
 
 # Notes
 
-* The project currently uses public test endpoints.
-* Download usage limits are configurable.
-* The frontend is intentionally lightweight and framework-free.
+- The project currently uses public test endpoints.
+- Download usage limits are configurable.
+- The frontend is intentionally lightweight and framework-free.
+- Public test endpoints may produce different results compared to commercial speed testing platforms.
+
+---
 
 # Future Improvements
 
-* Latency / jitter measurement
-* HTTPS support
-* WebSocket live telemetry
-* Historical result storage
-* Geographic server selection
-* Docker deployment
+- Latency / jitter measurement
+- HTTPS support
+- WebSocket live telemetry
+- Historical result storage
+- Geographic server selection
+- Docker deployment
+
+---
 
 # License
 
 All Rights Reserved © 2026 KARTHIK KAMATH K
-This project is provided for viewing and educational purposes only.
+
+This repository is provided for viewing and educational purposes only.
+
 You may not copy, modify, distribute, sublicense, or use this software without explicit permission from the author.
