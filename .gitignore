@@ -9,4 +9,3 @@ vcpkg/
 *.exp
 *.cache
 *.log
-*.txt
